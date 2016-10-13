@@ -1,6 +1,7 @@
 // Dependencies
 var mongoose        = require('mongoose');
 var User            = require('./model.js');
+var Venue            = require('./VenueModel.js');
 
 
 // Opens App Routes
@@ -22,6 +23,17 @@ module.exports = function(app) {
         });
     });
 
+    app.get('/venues', function(req, res){
+
+        var query = Venue.find({});
+        query.exec(function(err, venues){
+            if(err)
+                res.send(err);
+            
+            res.json(venues);
+        });
+    });
+
     // POST Routes
     // --------------------------------------------------------
     // Provides method for saving new users in the db
@@ -36,6 +48,18 @@ module.exports = function(app) {
                 res.send(err);
 
             // If no errors are found, it responds with a JSON of the new user
+            res.json(req.body);
+        });
+    });
+
+    app.post('/venues', function(req, res){
+        var lat = req.body.latitude;
+        var long = req.body.longitude;
+        var venue = new Venue(req.body);
+        venue.save(function(err){
+            if(err)
+                res.send(err);
+            
             res.json(req.body);
         });
     });

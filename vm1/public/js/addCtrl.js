@@ -25,7 +25,7 @@ addCtrl.controller('addCtrl', function($scope, $http, $rootScope, geolocation, g
         // Display message confirming that the coordinates verified.
         $scope.formData.htmlverified = "Yep (Thanks for giving us real data!)";
 
-        gservice.refresh($scope.formData.latitude, $scope.formData.longitude);
+       gservice.refresh($scope.formData.latitude, $scope.formData.longitude);
 
     });
 
@@ -43,6 +43,8 @@ addCtrl.controller('addCtrl', function($scope, $http, $rootScope, geolocation, g
     });
 
     // Creates a new user based on the form fields
+    //TODO: update this to create venues
+
     $scope.createUser = function() {
 
         // Grabs all of the text box fields

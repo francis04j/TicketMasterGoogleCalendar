@@ -14,9 +14,9 @@ angular.module('gservice', [])
         var lastMarker;
         var currentSelectedMarker;
 
-        // Selected Location (initialize to center of America)
-        var selectedLat = 39.50;
-        var selectedLong = -98.35;
+        // Selected Location (initialize to London)
+        var selectedLat = 51.532322;//39.50;
+        var selectedLong = -0.108335;//-98.35;
 
         // Handling Clicks and location selection
         googleMapService.clickLat  = 0;
@@ -44,6 +44,10 @@ angular.module('gservice', [])
                 initialize(latitude, longitude);
             }).error(function(){});
         };
+
+
+// Refresh the page upon window load. Use the initial latitude and longitude
+google.maps.event.addDomListener(window, 'load',googleMapService.refresh(selectedLat, selectedLong));
 
         // Private Inner Functions
         // --------------------------------------------------------------
@@ -153,10 +157,6 @@ var initialize = function(latitude, longitude) {
         $rootScope.$broadcast("clicked");
     });
 };
-
-// Refresh the page upon window load. Use the initial latitude and longitude
-google.maps.event.addDomListener(window, 'load',
-    googleMapService.refresh(selectedLat, selectedLong));
 
 return googleMapService;
 });

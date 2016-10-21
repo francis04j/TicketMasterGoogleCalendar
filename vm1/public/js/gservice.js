@@ -16,6 +16,7 @@ angular.module('gservice', [])
 
         // Selected Location (initialize to London)
         var selectedLat = 51.532322;//39.50;
+        
         var selectedLong = -0.108335;//-98.35;
 
         // Handling Clicks and location selection
@@ -35,7 +36,7 @@ angular.module('gservice', [])
             selectedLong = longitude;
 
             // Perform an AJAX call to get all of the records in the db.
-            $http.get('/users').success(function(response){
+            $http.get('/venues').success(function(response){
 
                 // Convert the results into Google Map Format
                 locations = convertToMapPoints(response);
@@ -59,27 +60,23 @@ google.maps.event.addDomListener(window, 'load',googleMapService.refresh(selecte
 
             // Loop through all of the JSON entries provided in the response
             for(var i= 0; i < response.length; i++) {
-                var user = response[i];
+                var venue = response[i];
 
                 // Create popup windows for each record
                 var  contentString =
-                    '<p><b>Username</b>: ' + user.username +
-                    '<br><b>Age</b>: ' + user.age +
-                    '<br><b>Gender</b>: ' + user.gender +
-                    '<br><b>Favorite Language</b>: ' + user.favlang +
+                    '<p><b>Name</b>: ' + venue.name +
+                    '<br><b>post code</b>: ' + venue.postalcode +                    
                     '</p>';
 
                 // Converts each of the JSON records into Google Maps Location format (Note [Lat, Lng] format).
                 locations.push({
-                    latlon: new google.maps.LatLng(user.location[1], user.location[0]),
+                    latlon: new google.maps.LatLng(venue.latitude, venue.longitude),
                     message: new google.maps.InfoWindow({
                         content: contentString,
                         maxWidth: 320
                     }),
-                    username: user.username,
-                    gender: user.gender,
-                    age: user.age,
-                    favlang: user.favlang
+                    name: venue.name
+                    
             });
         }
         // location is now an array populated with records in Google Maps format
@@ -97,7 +94,7 @@ var initialize = function(latitude, longitude) {
 
         // Create a new map and place in the index.html page
         var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 3,
+            zoom: 15,
             center: myLatLng
         });
     }

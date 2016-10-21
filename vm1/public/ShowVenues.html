@@ -3,7 +3,7 @@
 <html class="no-js" ng-app="meanMapApp">
 <head>
     <meta charset="utf-8">
-    <title>Scotch MEAN Map</title>
+    <title>My VenueMaster</title>
     <meta name="description" content="An example demonstrating Google Map integration with MEAN Apps">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- CSS -->
@@ -19,20 +19,18 @@
     <script src="../bower_components/angular/angular.js"></script>
     <script src="../bower_components/angular-route/angular-route.js"></script>
     <script src="../bower_components/angularjs-geolocation/dist/angularjs-geolocation.min.js"></script>
+    <script src="https://use.fontawesome.com/ab5c52cfe9.js"></script>
     <!-- Angular Source -->
     <script src="js/app.js"></script>
-    <script src="js/listCtrl.js"></script>
+    <script src="js/addCtrl.js"></script>
+    <script src="js/listVenuesCtrl.js"></script>
     <script src="js/gservice.js"></script>
 
 </head>
-<body ng-controller="listCtrl">
+<body ng-controller="listVenuesCtrl">
 <div class="container">
     <div class="header">
-        <ul class="nav nav-pills pull-right">
-            <li active><a href="">Join the Team</a></li>
-            <li disabled><a href="">Find Teammates</a></li>
-        </ul>
-        <h3 class="text-muted">The Scotch MEAN MapApp</h3>
+        <h3 class="text-muted text-center">pubs,theatres, venues around me</h3>
     </div>
     <!-- Map and Side Panel -->
     <div class="row content">
@@ -45,13 +43,23 @@
             <div class="panel panel-default">
                 <!-- Panel Title -->
                 <div class="panel-heading">
-                    <h2 class="panel-title text-center">Join the Scotch Team! <span class="glyphicon glyphicon-map-marker"></span></h2>
+                    <h2 class="panel-title text-center">Click to view more information about a venue <span class="glyphicon glyphicon-map-marker"></span></h2>
                 </div>
                 <!-- Panel Body -->
                 <div class="panel-body">
-                    <!-- List of venues -->
-                    <ul>
-						<li></li>
+                    <!-- List of venues -->                    
+                    <ul ng-repeat="venue in savedVenues track by venue.venueid" class="venueItem">
+						<li>{{venue.name}},{{venue.postalcode}}
+                        <a class="fa fa-heart fav-me"></a>
+                         </li>                        
+                        
+                        <button class="ss">Events</button>
+                        <div class="acpasnel">
+                            <div ng-repeat="evente in venue.evente track by evente._id">
+                                <p>{{evente.name}}</p>
+                            </div>
+                        </div>
+
 					</ul>                        
                         
                 </div>
@@ -60,10 +68,19 @@
     </div>
     <hr/>
     <!-- Footer -->
-    <div class="footer">
-        <p class="text-center"><span class="glyphicon glyphicon-check"></span> Created by Ahmed Haque for Scotch IO -
-            <a href="https://scotch.io/">App Tutorial</a> | <a href="https://github.com/afhaque/MeanMapAppV2.0">Github Repo</a></p>
-    </div>
+    
 </div>
+<script>
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+    acc[i].onclick = function(){
+        this.classList.toggle("active");
+        this.nextElementSibling.classList.toggle("show");
+        this.parent("venueItem").childNodes()
+  }
+}
+</script>
 </body>
 </html>

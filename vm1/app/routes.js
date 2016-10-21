@@ -1,6 +1,7 @@
 // Dependencies
 var mongoose        = require('mongoose');
 var User            = require('./model.js');
+var Event            = require('./eventModel.js');
 var Venue            = require('./VenueModel.js');
 
 
@@ -34,6 +35,27 @@ module.exports = function(app) {
         });
     });
 
+    app.get('/events', function(req, res){
+        var query = Event.find({});
+        query.exec(function(err, events){
+            if(err)
+                res.send(err);
+            
+            res.json(events);
+        });
+    });
+
+    app.get('/events/:venueid', function(req, res){
+
+        var query = Event.find({ name: request.params.venueid });
+        query.exec(function(err, events){
+            if(err)
+                res.send(err);
+            
+            res.json(events);
+        });
+    });
+
     // POST Routes
     // --------------------------------------------------------
     // Provides method for saving new users in the db
@@ -57,6 +79,20 @@ module.exports = function(app) {
         var long = req.body.longitude;
         var venue = new Venue(req.body);
         venue.save(function(err){
+            if(err)
+                res.send(err);
+            
+            res.json(req.body);
+        });
+    });
+
+    app.post('/events', function(req, res){          
+       var event1 = new Event(req.body);
+       event1.event_date = new Date(req.body.event_date);
+       // var venue = Venue.findOne({id: req.body.venue_id});  
+      //  venue.events.add(event1);
+       // venue.save(function(err){});
+        event1.save(function(err){
             if(err)
                 res.send(err);
             

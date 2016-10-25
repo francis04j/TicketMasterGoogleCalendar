@@ -9,10 +9,7 @@
     <!-- CSS -->
     <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css"/>
     <link rel="stylesheet" href="style.css"/>
-
-    <!-- Google Maps API -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDrn605l7RPadiwdzsOlRw9O28lxfYBJ6s"></script>
-    
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDrn605l7RPadiwdzsOlRw9O28lxfYBJ6s"></script>
     <!-- JS Source -->
     <script src="../bower_components/jquery/jquery.js"></script>
     <script src="../bower_components/angular/angular.js"></script>
@@ -20,25 +17,22 @@
     <script src="../bower_components/angularjs-geolocation/dist/angularjs-geolocation.min.js"></script>
     <script src="https://use.fontawesome.com/ab5c52cfe9.js"></script>
     <!-- Angular Source -->
-    <script src="js/app.js"></script>
+    <script src="js/app.js"></script>    
     <script src="js/addCtrl.js"></script>
     <script src="js/listVenuesCtrl.js"></script>
+    <script src="js/listFavVenuesCtrl.js"></script>
     <script src="js/gservice.js"></script>
 
 </head>
-<body ng-controller="listVenuesCtrl">
+<body ng-controller="listFavVenuesCtrl">
 <div class="container">
     <div class="header">
-        <h3 class="text-muted text-center">pubs,theatres, venues around me</h3>
+        <h3 class="text-muted text-center">My Favourite places</h3>
     </div>
-    <!-- Map and Side Panel -->
-    <div class="row content">
-        <!-- Google Map -->
-        <div class="col-md-7">
-            <div id="map"></div>
-        </div>
-        <!-- Side Panel -->
-        <div class="col-md-5">
+    <!-- Map  Panel -->
+    <div class="row content">        
+        <!--  Panel -->
+        <div class="col-md-12">
             <div class="panel panel-default">
                 <!-- Panel Title -->
                 <div class="panel-heading">
@@ -47,18 +41,11 @@
                 <!-- Panel Body -->
                 <div class="panel-body">
                     <!-- List of venues -->                    
-                    <ul ng-repeat="venue in savedVenues track by venue.venueid" class="venueItem">
+                    <ul ng-repeat="venue in favVenues track by venue.venueid" class="venueItem">
 						<li>{{venue.name}},{{venue.postalcode}}
-                        <a class="fa fa-heart fav-me" ng-click="addToFavs(venue.venueid)"></a>
+                        
                          </li>                        
                         
-                        <button class="ss">Events</button>
-                        <div class="acpasnel">
-                            <div ng-repeat="evente in venue.events track by evente._id">
-                                <p>{{evente.name}}</p>
-                            </div>
-                        </div>
-
 					</ul>                        
                         
                 </div>
@@ -69,17 +56,5 @@
     <!-- Footer -->
     
 </div>
-<script>
-var acc = document.getElementsByClassName("accordion");
-var i;
-
-for (i = 0; i < acc.length; i++) {
-    acc[i].onclick = function(){
-        this.classList.toggle("active");
-        this.nextElementSibling.classList.toggle("show");
-        this.parent("venueItem").childNodes()
-  }
-}
-</script>
 </body>
 </html>

@@ -14,7 +14,7 @@ var VenueSchema = new Schema({
     longitude:{type: [Number], required: true},    
     created_at: {type: Date, default: Date.now},
     updated_at: {type: Date, default: Date.now},
-    events : [{ type: Schema.Types.ObjectId, ref: 'events'}]
+    events : [{ type: Schema.Types.ObjectId, ref: 'Events'}]
 });
 
 // Sets the created_at parameter equal to the current time

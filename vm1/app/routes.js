@@ -1,6 +1,6 @@
 // Dependencies
 var mongoose        = require('mongoose');
-var User            = require('./model.js');
+var User            = require('./userModel.js');
 var Event            = require('./eventModel.js');
 var Venue            = require('./VenueModel.js');
 
@@ -25,8 +25,7 @@ module.exports = function(app) {
     });
 
     app.get('/venues', function(req, res){
-
-        var query = Venue.find({});
+        var query = Venue.find({}).populate('events');
         query.exec(function(err, venues){
             if(err)
                 res.send(err);
@@ -56,6 +55,15 @@ module.exports = function(app) {
         });
     });
 
+app.get('/userFavVenues', function(req, res){
+        var query = User.find({}).populate('favvenues');
+        query.exec(function(err, venues){
+            if(err)
+                res.send(err);
+            
+            res.json(venues);
+        });        
+    });
     // POST Routes
     // --------------------------------------------------------
     // Provides method for saving new users in the db
@@ -74,6 +82,21 @@ module.exports = function(app) {
         });
     });
 
+    app.post('/addVenueToUsers', function(req, res){
+        User.findOne({username: req.body.username},
+            function(err,user){
+         Venue.findOne({ venueid: req.body.venueid },
+                            function(err,venue){
+                                if (err) res.send(err);
+                                user.favvenues.push(venue);
+                                user.save(function(err,evente){                         
+                            if(err) res.send(err);            
+                            res.json(req.body);
+                            });
+                        });
+     });
+    });
+
     app.post('/venues', function(req, res){
         var lat = req.body.latitude;
         var long = req.body.longitude;
@@ -89,14 +112,45 @@ module.exports = function(app) {
     app.post('/events', function(req, res){          
        var event1 = new Event(req.body);
        event1.event_date = new Date(req.body.event_date);
-       // var venue = Venue.findOne({id: req.body.venue_id});  
+        Venue.findOne({venueid: req.body.venue_id},
+                    function(err,venue1){
+                        if (err) res.send(err);
+                        venue1.events.push(event1);
+                        venue1.save(function(err,evente){
+                            event1.save(function(err){
+                            if(err)
+                                res.send(err);
+            
+                            res.json(req.body);
+                            });
+                        });
+                      });  
+                        
+                    
       //  venue.events.add(event1);
        // venue.save(function(err){});
-        event1.save(function(err){
+        
+    });
+
+    app.delete('/events', function(req, res){
+
+        var query = Event.remove({ Eventid: req.body.eventid });
+        query.exec(function(err, events){
             if(err)
                 res.send(err);
             
-            res.json(req.body);
+            res.json(events);
+        });
+    });
+
+    app.delete('/venues', function(req, res){
+
+        var query = Venue.remove({ venueid: req.body.venueid });
+        query.exec(function(err, venues){
+            if(err)
+                res.send(err);
+            
+            res.json(venues);
         });
     });
 };  
